@@ -1,0 +1,111 @@
+/*
+    Jack O'Toole
+    queue type linked list
+    head , elements...., tail, null
+
+*/
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int value;
+    struct Node *next;
+} Node;
+
+typedef struct{
+    Node *head;
+    Node *tail;
+    int  size;
+} Queue
+
+Queue *create_queue();
+int size(Queue *queue);
+bool is_empty(Queue *queue);
+int peek(Queue *queue,bool *status);   // value at head of queue
+void enqueue(Queue *queue, int value);
+int dequeue(Queue *queue,bool *status);
+void destroy_queue(Queue *queue);
+
+int main(){
+/* */
+    return;
+}
+
+Queue *create_queue(){
+    
+    Queue *queue =  malloc(sizeof(Queue));
+    queue->head = NULL;
+    queue->tail = NULL;
+    queue->size = 0;
+
+    return queue;
+
+}
+
+int size(Queue *queue){
+    
+    return queue->size;
+}
+
+bool is_empty(Queue *queue){
+
+    return (queue->size == 0);
+
+}
+
+int peek(Queue *queue,bool *status){
+    if (is_empty(queue)){
+        *status = false;
+        return NULL;  // ?????
+    }
+    return queue->head->value;
+    status = true;
+
+}   // value at head of queue
+void enqueue(Queue *queue, int value){
+    Node *newNode = malloc(sizeof(Node));
+    
+    newNode->value = value;
+    newNode->next = NULL;
+    if (is_empty(queue)) {
+        queue->head = newNode;
+        queue->tail = newNode;
+    }
+    else{
+        queue->tail->next = newNode;
+        queue->tail = newNode;
+    }
+    queue->size++;
+
+}
+int dequeue(Queue *queue,bool *status){
+    if is_empty(queue){
+        *status = false;
+        return NULL;
+    }
+   
+    *status = TRUE;
+    int value = queue->head->value;
+
+    Node *oldHead = queue->head;
+    if queue->size == 1 {
+        queue->head = NULL;
+        queue->tail = NULL;
+    } else {
+        queue->head = queue->head->next;// ??? oldHead
+    }
+    free(oldHead);
+    queue->size--;
+    return value;
+}
+void destroy_queue(Queue *queue){
+    Node *currentNode = queue->head;
+    while (currentNode != NULL){
+        Node *temp =currentNode;
+        currentNode= currentNode->next;
+        free(temp);
+    }
+    free(queue);
+}
